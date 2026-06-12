@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+    <script>
+    // Proteção de página - verifica sessão
+    const session = localStorage.getItem('econoweb_session') || sessionStorage.getItem('econoweb_session');
+    if (!session) {
+        window.location.href = 'index.html';
+    }
+   </script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
