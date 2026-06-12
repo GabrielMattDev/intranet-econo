@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Economart Connect - Login</title>
+    <title>EconoWeb - Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -113,38 +113,10 @@
             gap: 12px;
         }
 
-        .logo-icon-wrap {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3), 0 0 0 4px rgba(59, 130, 246, 0.1);
-            animation: logoPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes logoPulse {
-            0%, 100% { box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3), 0 0 0 4px rgba(59, 130, 246, 0.1); }
-            50% { box-shadow: 0 15px 40px rgba(30, 64, 175, 0.4), 0 0 0 8px rgba(59, 130, 246, 0.15); }
-        }
-
-        .logo-icon-wrap i {
-            font-size: 32px;
-            color: white;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--dark);
-            letter-spacing: -1px;
-            line-height: 1.2;
-        }
-
-        .logo-text span {
-            color: var(--primary);
+        .logo-img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 8px;
         }
 
         .tagline {
@@ -450,15 +422,8 @@
                 padding: 28px 20px;
                 border-radius: 20px;
             }
-            .logo-text {
-                font-size: 24px;
-            }
-            .logo-icon-wrap {
-                width: 60px;
-                height: 60px;
-            }
-            .logo-icon-wrap i {
-                font-size: 26px;
+            .logo-img {
+                width: 150px;
             }
         }
     </style>
@@ -474,33 +439,30 @@
 
     <div class="login-container">
         <div class="login-card">
-            <!-- Logo -->
+            <!-- Logo EconoWeb -->
             <div class="logo-section">
                 <div class="logo-wrapper">
-                    <div class="logo-icon-wrap">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <div class="logo-text">Econom<span>Connect</span></div>
-                    <div class="tagline">Rede Social Corporativa</div>
+                    <img src="econoweb_logo.png" alt="EconoWeb" class="logo-img" onerror="this.style.display='none'">
+                    <div class="tagline">Intranet Corporativa</div>
                 </div>
             </div>
 
             <!-- Login Form -->
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label" for="username">Matricula ou E-mail</label>
+                    <label class="form-label" for="username">Usuário</label>
                     <div class="input-wrapper">
                         <input
                             type="text"
                             id="username"
                             class="form-input"
-                            placeholder="Digite sua matricula ou e-mail"
+                            placeholder="Digite seu usuário"
                             autocomplete="username"
                             required
                         >
                         <i class="fas fa-user input-icon"></i>
                     </div>
-                    <div class="error-message" id="username-error">Matricula ou e-mail nao encontrado</div>
+                    <div class="error-message" id="username-error">Usuário não encontrado</div>
                 </div>
 
                 <div class="form-group">
@@ -527,7 +489,7 @@
                         <input type="checkbox" id="rememberMe">
                         <span>Lembrar de mim</span>
                     </label>
-                    <a href="recuperar-senha.html" class="link link-primary" style="font-size: 13px;">
+                    <a href="#" class="link link-primary" style="font-size: 13px;" onclick="alert('Contate o administrador do sistema para recuperar acesso.')">
                         Esqueci a senha
                     </a>
                 </div>
@@ -537,33 +499,32 @@
                 </button>
             </form>
 
-            <div class="divider">ou</div>
 
-            <div class="sso-buttons">
-                <button class="sso-btn">
-                    <i class="fab fa-microsoft" style="color: #00A4EF;"></i> Entrar com Microsoft 365
-                </button>
-                <button class="sso-btn">
-                    <i class="fab fa-google" style="color: #EA4335;"></i> Entrar com Google Workspace
-                </button>
-            </div>
-
-            <!-- Links -->
-            <div class="links-section">
-                <span style="font-size: 13px; color: var(--gray);">
-                    Primeiro acesso? <a href="#" class="link link-primary">Ativar conta</a>
-                </span>
-            </div>
 
             <!-- Security Badge -->
             <div class="security-badge">
                 <i class="fas fa-shield-halved"></i>
-                <span>Conexao segura e criptografada</span>
+                <span>Acesso restrito - Autenticação obrigatória</span>
             </div>
         </div>
     </div>
 
     <script>
+        // ===== BANCO DE DADOS DE USUÁRIOS =====
+        // Em produção, isso viria de um backend seguro
+        const USERS = [
+            { username: 'admin', password: 'Biel@1812', name: 'Administrador', role: 'admin' },
+            { username: 'gabriel.matos', password: 'Econo@2024', name: 'Gabriel Matos', role: 'user' },
+            { username: 'maria.silva', password: 'Econo@2024', name: 'Maria Silva', role: 'user' },
+            { username: 'joao.pereira', password: 'Econo@2024', name: 'João Pereira', role: 'user' },
+            { username: 'ana.costa', password: 'Econo@2024', name: 'Ana Costa', role: 'user' },
+            { username: 'pedro.santos', password: 'Econo@2024', name: 'Pedro Santos', role: 'user' },
+            { username: 'lucia.oliveira', password: 'Econo@2024', name: 'Lúcia Oliveira', role: 'user' },
+            { username: 'carlos.mendes', password: 'Econo@2024', name: 'Carlos Mendes', role: 'user' },
+            { username: 'fernanda.lima', password: 'Econo@2024', name: 'Fernanda Lima', role: 'user' },
+            { username: 'ricardo. Souza', password: 'Econo@2024', name: 'Ricardo Souza', role: 'user' }
+        ];
+
         // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('password');
@@ -598,12 +559,14 @@
             let hasError = false;
 
             if (!username) {
+                usernameError.textContent = 'Digite seu usuário';
                 usernameError.classList.add('show');
                 usernameInput.classList.add('error');
                 hasError = true;
             }
 
             if (!password) {
+                passwordError.textContent = 'Digite sua senha';
                 passwordError.classList.add('show');
                 passwordInput.classList.add('error');
                 hasError = true;
@@ -617,11 +580,53 @@
 
             // Simulate loading
             loginBtn.disabled = true;
-            loginBtn.innerHTML = '<div class="spinner"></div> Entrando...';
+            loginBtn.innerHTML = '<div class="spinner"></div> Verificando credenciais...';
 
             setTimeout(() => {
-                window.location.href = 'dash.html';
-            }, 1500);
+                // AUTHENTICATION CHECK
+                const user = USERS.find(u => u.username === username && u.password === password);
+
+                if (!user) {
+                    // Check if username exists
+                    const userExists = USERS.find(u => u.username === username);
+                    if (userExists) {
+                        passwordError.textContent = 'Senha incorreta';
+                        passwordError.classList.add('show');
+                        passwordInput.classList.add('error');
+                    } else {
+                        usernameError.textContent = 'Usuário não cadastrado';
+                        usernameError.classList.add('show');
+                        usernameInput.classList.add('error');
+                    }
+
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Entrar na Intranet';
+                    loginForm.classList.add('shake');
+                    setTimeout(() => loginForm.classList.remove('shake'), 400);
+                    return;
+                }
+
+                // SUCCESS - Store session and redirect
+                const sessionData = {
+                    username: user.username,
+                    name: user.name,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                };
+
+                if (document.getElementById('rememberMe').checked) {
+                    localStorage.setItem('econoweb_session', JSON.stringify(sessionData));
+                } else {
+                    sessionStorage.setItem('econoweb_session', JSON.stringify(sessionData));
+                }
+
+                loginBtn.innerHTML = '<i class="fas fa-check"></i> Acesso autorizado!';
+                loginBtn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+
+                setTimeout(() => {
+                    window.location.href = 'dash.html';
+                }, 800);
+            }, 1200);
         });
 
         // Clear errors on input
@@ -634,6 +639,25 @@
             passwordError.classList.remove('show');
             passwordInput.classList.remove('error');
         });
+
+        // Check existing session
+        const existingSession = localStorage.getItem('econoweb_session') || sessionStorage.getItem('econoweb_session');
+        if (existingSession) {
+            try {
+                const session = JSON.parse(existingSession);
+                const loginTime = new Date(session.loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+
+                // Auto-redirect if session is less than 24 hours
+                if (hoursDiff < 24) {
+                    window.location.href = 'dash.html';
+                }
+            } catch (e) {
+                localStorage.removeItem('econoweb_session');
+                sessionStorage.removeItem('econoweb_session');
+            }
+        }
     </script>
 </body>
 </html>
