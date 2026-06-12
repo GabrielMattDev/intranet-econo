@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EconoWeb</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1E40AF; --primary-light: #3B82F6; --primary-dark: #1E3A8A;
+            --secondary: #059669; --accent: #EA580C; --danger: #DC2626;
+            --purple: #7C3AED; --pink: #DB2777; --dark: #0F172A; --dark-light: #1E293B;
+            --gray: #64748B; --gray-light: #94A3B8; --gray-lighter: #CBD5E1;
+            --bg: #F8FAFC; --bg-card: #FFFFFF; --bg-hover: #F1F5F9; --border: #E2E8F0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg); color: var(--dark); line-height: 1.5; overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--gray-lighter); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gray-light); }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 64px;
+            background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+        }
+        .nav-left { display: flex; align-items: center; gap: 24px; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius-xs);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 20px; font-weight: 800;
+        }
+        .logo-text { font-size: 22px; font-weight: 900; color: var(--dark); letter-spacing: -0.8px; }
+        .logo-text span { color: var(--primary); }
+        .search-box { position: relative; width: 360px; }
+        .search-box input {
+            width: 100%; padding: 10px 16px 10px 42px;
+            border: 1.5px solid var(--border); border-radius: 100px;
+            background: var(--bg); font-size: 14px; font-family: inherit;
+            transition: var(--transition); outline: none;
+        }
+        .search-box input:focus {
+            border-color: var(--primary-light); background: white;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+        }
+        .search-box i {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%); color: var(--gray-light); font-size: 14px;
+        }
+        .nav-center { display: flex; align-items: center; gap: 4px; }
+        .nav-tab {
+            display: flex; align-items: center; justify-content: center;
+            width: 110px; height: 48px; border-radius: var(--radius-xs);
+            cursor: pointer; color: var(--gray); font-size: 20px;
+            position: relative; transition: var(--transition); text-decoration: none;
+        }
+        .nav-tab:hover { background: var(--bg-hover); color: var(--primary); }
+        .nav-tab.active { color: var(--primary); }
+        .nav-tab.active::after {
+            content: ''; position: absolute; bottom: -8px; left: 50%;
+            transform: translateX(-50%); width: 60px; height: 3px;
+            background: var(--primary); border-radius: 3px;
+        }
+        .nav-tab .badge {
+            position: absolute; top: 6px; right: 24px;
+            width: 18px; height: 18px; background: var(--accent);
+            color: white; font-size: 10px; font-weight: 700;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .nav-btn {
+            width: 40px; height: 40px; border: none; background: var(--bg);
+            border-radius: 50%; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; color: var(--dark);
+            font-size: 18px; position: relative; transition: var(--transition);
+        }
+        .nav-btn:hover { background: var(--bg-hover); }
+        .nav-btn .badge {
+            position: absolute; top: -2px; right: -2px;
+            width: 18px; height: 18px; background: var(--danger);
+            color: white; font-size: 10px; font-weight: 700;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            border: 2px solid white;
+        }
+        .user-menu {
+            display: flex; align-items: center; gap: 10px;
+            padding: 4px 4px 4px 12px; border-radius: 100px;
+            cursor: pointer; transition: var(--transition); margin-left: 8px;
+        }
+        .user-menu:hover { background: var(--bg-hover); }
+        .user-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), #10B981);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 13px;
+        }
+        .user-menu i { color: var(--gray); font-size: 12px; }
+
+        .main-layout {
+            display: grid; grid-template-columns: 300px 1fr 320px;
+            gap: 24px; max-width: 1400px; margin: 0 auto;
+            padding: 88px 24px 40px;
+        }
+
+        .left-sidebar {
+            position: sticky; top: 88px;
+            height: calc(100vh - 104px); overflow-y: auto;
+        }
+        .menu-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px;
+        }
+        .menu-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 20px; cursor: pointer;
+            transition: var(--transition); text-decoration: none; color: inherit;
+        }
+        .menu-item:hover { background: var(--bg-hover); }
+        .menu-item.active {
+            background: linear-gradient(90deg, #EFF6FF, transparent);
+            border-left: 3px solid var(--primary);
+        }
+        .menu-item.active .menu-icon { color: var(--primary); }
+        .menu-item.active .menu-text { color: var(--primary); font-weight: 600; }
+        .menu-icon {
+            width: 36px; height: 36px; border-radius: var(--radius-xs);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: var(--gray); transition: var(--transition);
+        }
+        .menu-item:hover .menu-icon { transform: scale(1.1); }
+        .mi-home { background: #EFF6FF; color: var(--primary); }
+        .mi-people { background: #ECFDF5; color: var(--secondary); }
+        .mi-groups { background: #F3E8FF; color: var(--purple); }
+        .mi-events { background: #FFF7ED; color: var(--accent); }
+        .mi-docs { background: #FEF2F2; color: var(--danger); }
+        .mi-store { background: #F0FDFA; color: #0D9488; }
+        .mi-ti { background: #EFF6FF; color: var(--primary-light); }
+        .mi-rh { background: #FDF2F8; color: var(--pink); }
+        .menu-text { font-size: 15px; font-weight: 500; color: var(--dark-light); }
+        .menu-divider { height: 1px; background: var(--border); margin: 8px 20px; }
+        .menu-section-title {
+            padding: 16px 20px 8px; font-size: 13px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-light);
+        }
+        .community-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; cursor: pointer; transition: var(--transition);
+        }
+        .community-item:hover { background: var(--bg-hover); }
+        .community-avatar {
+            width: 32px; height: 32px; border-radius: var(--radius-xs);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: white; font-weight: 700; flex-shrink: 0;
+        }
+        .community-info { flex: 1; min-width: 0; }
+        .community-name {
+            font-size: 14px; font-weight: 600; color: var(--dark);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .community-members { font-size: 12px; color: var(--gray-light); }
+        .community-badge {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--secondary); flex-shrink: 0;
+        }
+
+        .center-feed { max-width: 680px; margin: 0 auto; width: 100%; }
+
+        .create-post {
+            background: var(--bg-card); border-radius: var(--radius);
+            border: 1px solid var(--border); padding: 16px 20px; margin-bottom: 24px;
+        }
+        .create-post-input {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+        }
+        .create-post-input .user-avatar { width: 44px; height: 44px; font-size: 16px; }
+        .create-post-input input {
+            flex: 1; padding: 12px 20px; border: 1.5px solid var(--border);
+            border-radius: 100px; background: var(--bg); font-size: 15px;
+            font-family: inherit; outline: none; transition: var(--transition);
+        }
+        .create-post-input input:focus {
+            border-color: var(--primary-light); background: white;
+        }
+        .create-post-actions {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 12px; border-top: 1px solid var(--border);
+        }
+        .post-types { display: flex; gap: 8px; }
+        .post-type-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border: none; background: transparent;
+            border-radius: var(--radius-xs); cursor: pointer;
+            font-size: 14px; font-weight: 500; color: var(--gray);
+            transition: var(--transition); font-family: inherit;
+        }
+        .post-type-btn:hover { background: var(--bg-hover); }
+        .post-type-btn i { font-size: 18px; }
+        .pt-photo i { color: var(--secondary); }
+        .pt-video i { color: var(--accent); }
+        .pt-event i { color: var(--purple); }
+        .pt-doc i { color: var(--primary); }
+        .btn-publish {
+            padding: 10px 28px; background: var(--primary); color: white;
+            border: none; border-radius: 100px; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+        }
+        .btn-publish:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        .post-card {
+            background: var(--bg-card); border-radius: var(--radius);
+            border: 1px solid var(--border); margin-bottom: 20px;
+            overflow: hidden; transition: var(--transition);
+        }
+        .post-card:hover { box-shadow: var(--shadow-md); }
+        .post-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px;
+        }
+        .post-author { display: flex; align-items: center; gap: 12px; }
+        .post-author-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 16px; flex-shrink: 0;
+        }
+        .post-author-info { min-width: 0; }
+        .post-author-name {
+            font-size: 15px; font-weight: 700; color: var(--dark);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .verified-badge {
+            width: 16px; height: 16px; background: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 9px;
+        }
+        .post-meta {
+            font-size: 13px; color: var(--gray);
+            display: flex; align-items: center; gap: 6px; margin-top: 2px;
+        }
+        .post-meta i { font-size: 11px; }
+        .post-options {
+            width: 36px; height: 36px; border: none; background: transparent;
+            border-radius: 50%; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; color: var(--gray);
+            transition: var(--transition);
+        }
+        .post-options:hover { background: var(--bg-hover); color: var(--dark); }
+        .post-content {
+            padding: 0 20px 16px; font-size: 15px;
+            line-height: 1.6; color: var(--dark-light);
+        }
+        .post-content p { margin-bottom: 12px; }
+        .post-hashtags { color: var(--primary); font-weight: 500; }
+        .post-media {
+            width: 100%; max-height: 500px; object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .post-media-grid {
+            display: grid; gap: 2px; padding: 0 20px 16px;
+        }
+        .post-media-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .post-media-grid.grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .post-media-grid img {
+            width: 100%; height: 200px; object-fit: cover;
+            border-radius: var(--radius-xs); cursor: pointer; transition: var(--transition);
+        }
+        .post-media-grid img:hover { opacity: 0.9; }
+        .post-stats {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 20px; border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .reactions-summary { display: flex; align-items: center; gap: 6px; }
+        .reaction-emoji {
+            width: 22px; height: 22px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; border: 2px solid white; margin-left: -8px;
+        }
+        .reaction-emoji:first-child { margin-left: 0; }
+        .reaction-like { background: #3B82F6; color: white; }
+        .reaction-love { background: #EF4444; color: white; }
+        .reaction-wow { background: #F59E0B; color: white; }
+        .reactions-count { font-size: 14px; color: var(--gray); margin-left: 4px; }
+        .comments-share { display: flex; gap: 16px; font-size: 14px; color: var(--gray); }
+        .post-actions-bar { display: flex; padding: 4px 16px; }
+        .post-action {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 8px; padding: 10px; border: none; background: transparent;
+            border-radius: var(--radius-xs); cursor: pointer;
+            font-size: 14px; font-weight: 600; color: var(--gray);
+            transition: var(--transition); font-family: inherit;
+        }
+        .post-action:hover { background: var(--bg-hover); }
+        .post-action.liked { color: var(--primary); }
+        .post-action.liked i { color: var(--primary); }
+        .post-action i { font-size: 18px; }
+
+        .comments-section {
+            padding: 12px 20px 16px; border-top: 1px solid var(--border); background: var(--bg);
+        }
+        .comment-item { display: flex; gap: 10px; margin-bottom: 12px; }
+        .comment-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 12px; flex-shrink: 0;
+        }
+        .comment-body {
+            flex: 1; background: white; padding: 10px 14px;
+            border-radius: var(--radius-xs); border: 1px solid var(--border);
+        }
+        .comment-author {
+            font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 4px;
+        }
+        .comment-text { font-size: 14px; color: var(--dark-light); line-height: 1.5; }
+        .comment-actions {
+            display: flex; gap: 12px; margin-top: 6px;
+            font-size: 12px; color: var(--gray);
+        }
+        .comment-actions span { cursor: pointer; font-weight: 500; }
+        .comment-actions span:hover { color: var(--primary); text-decoration: underline; }
+        .comment-input-wrapper {
+            display: flex; align-items: center; gap: 10px; margin-top: 12px;
+        }
+        .comment-input-wrapper input {
+            flex: 1; padding: 10px 16px; border: 1.5px solid var(--border);
+            border-radius: 100px; background: white; font-size: 14px;
+            font-family: inherit; outline: none; transition: var(--transition);
+        }
+        .comment-input-wrapper input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+        }
+
+        .right-sidebar {
+            position: sticky; top: 88px;
+            height: calc(100vh - 104px); overflow-y: auto;
+        }
+        .widget {
+            background: var(--bg-card); border-radius: var(--radius);
+            border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden;
+        }
+        .widget-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; border-bottom: 1px solid var(--border);
+        }
+        .widget-title {
+            font-size: 15px; font-weight: 700; color: var(--dark);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .widget-title i { color: var(--primary); font-size: 14px; }
+        .widget-more {
+            font-size: 13px; color: var(--primary); font-weight: 600;
+            cursor: pointer; text-decoration: none;
+        }
+        .widget-more:hover { text-decoration: underline; }
+        .widget-body { padding: 12px 0; }
+
+        .birthday-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; cursor: pointer; transition: var(--transition);
+        }
+        .birthday-item:hover { background: var(--bg-hover); }
+        .birthday-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 14px; position: relative;
+        }
+        .birthday-cake {
+            position: absolute; bottom: -4px; right: -4px;
+            width: 20px; height: 20px;
+            background: linear-gradient(135deg, #F59E0B, #EA580C);
+            border: 2px solid white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px;
+        }
+        .birthday-info { flex: 1; }
+        .birthday-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+        .birthday-role { font-size: 12px; color: var(--gray); }
+        .btn-wish {
+            padding: 6px 14px; background: #EFF6FF; color: var(--primary);
+            border: none; border-radius: 100px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: var(--transition); font-family: inherit;
+        }
+        .btn-wish:hover { background: var(--primary); color: white; }
+
+        .job-item {
+            padding: 14px 20px; border-bottom: 1px solid var(--border);
+            cursor: pointer; transition: var(--transition);
+        }
+        .job-item:last-child { border-bottom: none; }
+        .job-item:hover { background: var(--bg-hover); }
+        .job-title { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+        .job-meta {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 12px; color: var(--gray);
+        }
+        .job-tag {
+            padding: 2px 10px; background: #ECFDF5; color: var(--secondary);
+            border-radius: 100px; font-size: 11px; font-weight: 600;
+        }
+
+        .trending-item {
+            padding: 12px 20px; cursor: pointer; transition: var(--transition);
+        }
+        .trending-item:hover { background: var(--bg-hover); }
+        .trending-category {
+            font-size: 12px; color: var(--gray);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .trending-category i { font-size: 10px; color: var(--secondary); }
+        .trending-title { font-size: 14px; font-weight: 700; color: var(--dark); margin: 4px 0; }
+        .trending-count { font-size: 12px; color: var(--gray-light); }
+
+        .suggestion-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+        }
+        .suggestion-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 13px; flex-shrink: 0;
+        }
+        .suggestion-info { flex: 1; min-width: 0; }
+        .suggestion-name {
+            font-size: 14px; font-weight: 600; color: var(--dark);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .suggestion-role { font-size: 12px; color: var(--gray); }
+        .btn-follow {
+            padding: 6px 16px; background: transparent; color: var(--primary);
+            border: 1.5px solid var(--primary); border-radius: 100px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            transition: var(--transition); font-family: inherit;
+        }
+        .btn-follow:hover { background: var(--primary); color: white; }
+
+        .sidebar-footer {
+            padding: 16px 20px; font-size: 12px;
+            color: var(--gray-light); line-height: 1.8;
+        }
+        .sidebar-footer a { color: var(--gray-light); text-decoration: none; }
+        .sidebar-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 1200px) {
+            .main-layout { grid-template-columns: 260px 1fr; }
+            .right-sidebar { display: none; }
+        }
+        @media (max-width: 900px) {
+            .main-layout { grid-template-columns: 1fr; padding-top: 80px; }
+            .left-sidebar { display: none; }
+            .search-box { width: 200px; }
+            .nav-center { display: none; }
+            .story-img { width: 54px; height: 54px; }
+        }
+        @media (max-width: 600px) {
+            .navbar { padding: 0 12px; }
+            .logo-text { display: none; }
+            .search-box { display: none; }
+            .post-types { flex-wrap: wrap; }
+            .post-type-btn span { display: none; }
+            .post-action span { display: none; }
+            .post-media-grid.grid-2, .post-media-grid.grid-3 { grid-template-columns: 1fr; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .post-card { animation: fadeInUp 0.5s ease forwards; }
+        .post-card:nth-child(1) { animation-delay: 0.1s; }
+        .post-card:nth-child(2) { animation-delay: 0.2s; }
+        .post-card:nth-child(3) { animation-delay: 0.3s; }
+        .post-card:nth-child(4) { animation-delay: 0.4s; }
+    
+        /* ===== NOTIFICATION POPUP ===== */
+        .notification-popup {
+            position: absolute;
+            top: 56px;
+            right: 80px;
+            width: 400px;
+            max-height: 520px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg), 0 20px 40px rgba(0,0,0,0.15);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.96);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .notification-popup.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .notification-popup::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 24px;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+
+        .notif-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+            background: var(--bg-card);
+        }
+        .notif-header-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .notif-header-title i { color: var(--primary); font-size: 14px; }
+        .notif-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .notif-header-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-xs);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .notif-header-btn:hover { background: #EFF6FF; }
+
+        .notif-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 2;
+            background: var(--bg-card);
+        }
+        .notif-tab {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            position: relative;
+        }
+        .notif-tab:hover { color: var(--dark); background: var(--bg-hover); }
+        .notif-tab.active { color: var(--primary); background: #EFF6FF; }
+        .notif-tab .tab-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            background: var(--danger);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notif-list {
+            overflow-y: auto;
+            max-height: 380px;
+            padding: 4px 0;
+        }
+        .notif-list::-webkit-scrollbar { width: 4px; }
+        .notif-list::-webkit-scrollbar-thumb { background: var(--gray-lighter); border-radius: 10px; }
+
+        .notif-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item:hover { background: var(--bg-hover); }
+        .notif-item.unread { background: #F8FAFC; }
+        .notif-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .notif-icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .notif-icon-like { background: #EFF6FF; color: var(--primary); }
+        .notif-icon-comment { background: #ECFDF5; color: var(--secondary); }
+        .notif-icon-mention { background: #F3E8FF; color: var(--purple); }
+        .notif-icon-event { background: #FFF7ED; color: var(--accent); }
+        .notif-icon-system { background: #FEF2F2; color: var(--danger); }
+        .notif-icon-achievement { background: linear-gradient(135deg, #FEF3C7, #FDE68A); color: var(--accent); }
+
+        .notif-content { flex: 1; min-width: 0; }
+        .notif-text {
+            font-size: 13px;
+            color: var(--dark);
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+        .notif-text strong { font-weight: 700; }
+        .notif-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--gray-light);
+        }
+        .notif-meta .notif-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            flex-shrink: 0;
+        }
+        .notif-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+        .notif-action-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 12px;
+        }
+        .notif-action-btn:hover { background: var(--bg-hover); color: var(--primary); }
+        .notif-action-btn.mark-read:hover { color: var(--secondary); }
+
+        .notif-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: var(--bg-card);
+        }
+        .notif-footer a {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .notif-footer a:hover { text-decoration: underline; }
+
+        .notif-empty {
+            padding: 40px 20px;
+            text-align: center;
+            display: none;
+        }
+        .notif-empty i {
+            font-size: 48px;
+            color: var(--gray-lighter);
+            margin-bottom: 12px;
+        }
+        .notif-empty-text {
+            font-size: 14px;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+        /* ===== SCROLL LOCK ===== */
+        body.notif-open {
+            overflow: hidden;
+            padding-right: 6px; /* compensate for scrollbar width */
+        }
+
+
+        /* Overlay for closing popup when clicking outside */
+        .notif-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1999;
+            display: none;
+        }
+        .notif-overlay.active { display: block; }
+
+        @media (max-width: 600px) {
+            .notification-popup {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-height: 70vh;
+                border-radius: var(--radius) var(--radius) 0 0;
+                transform: translateY(100%);
+            }
+            .notification-popup.active {
+                transform: translateY(0);
+            }
+            .notification-popup::before { display: none; }
+        }
+
+        .post-action.liked { color: var(--primary); }
+        .post-action.liked i { color: var(--primary); }
+        .post-action.saved { color: var(--accent); }
+        .post-action.saved i { color: var(--accent); }
+</style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="dash.html" class="logo">
+    <img src="econoweb_logo.png" alt="EconoWeb" style="height: 70px; width: auto; display: block;">
+            </a>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Pesquisar pessoas, comunidades, posts...">
+            </div>
+        </div>
+                <div class="nav-center">
+            <a href="dash.html" class="nav-tab active" title="Feed Principal"><i class="fas fa-home"></i></a>
+            <a href="comunidade.html" class="nav-tab" title="Comunidades"><i class="fas fa-users"></i></a>
+            <a href="gaming.html" class="nav-tab" title="Gamificacao"><i class="fas fa-trophy"></i></a>
+            <a href="eventos.html" class="nav-tab" title="Eventos"><i class="fas fa-calendar-star"></i></a>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" title="Criar"><i class="fas fa-plus"></i></button>
+            <button class="nav-btn" title="Notificacoes"><i class="fas fa-bell"></i><span class="badge">5</span></button>
+            <a href="perfil.html" class="user-menu" style="text-decoration:none;color:inherit;">
+    <img src="foto_eu.png" alt="Perfil" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block;">
+    <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </nav>
+
+        <!-- Notification Overlay -->
+        <div class="notif-overlay" id="notifOverlay" onclick="closeNotifPopup(); document.body.classList.remove('notif-open');"></div>
+
+        <!-- Notification Popup -->
+        <div class="notification-popup" id="notifPopup">
+            <div class="notif-header">
+                <div class="notif-header-title">
+                    <i class="fas fa-bell"></i> Notificacoes
+                </div>
+                <div class="notif-header-actions">
+                    <button class="notif-header-btn" onclick="markAllRead()">
+                        <i class="fas fa-check-double"></i> Marcar todas como lidas
+                    </button>
+                </div>
+            </div>
+            <div class="notif-tabs">
+                <button class="notif-tab active" onclick="switchNotifTab('all')">Todas</button>
+                <button class="notif-tab" onclick="switchNotifTab('unread')">
+                    Nao lidas <span class="tab-badge">5</span>
+                </button>
+                <button class="notif-tab" onclick="switchNotifTab('mentions')">Mencoes</button>
+            </div>
+            <div class="notif-list" id="notifList">
+                <!-- Notificacao 1 - Like -->
+                <div class="notif-item unread" data-type="like">
+                    <div class="notif-icon-wrap notif-icon-like">
+                        <i class="fas fa-thumbs-up"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Joao Pereira</strong> curtiu sua publicacao sobre o <strong>Programa Economart Saude</strong></div>
+                        <div class="notif-meta">
+                            <span class="notif-dot"></span>
+                            <span>Ha 5 minutos</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn mark-read" title="Marcar como lida" onclick="markRead(this)">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 2 - Comment -->
+                <div class="notif-item unread" data-type="comment">
+                    <div class="notif-icon-wrap notif-icon-comment">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Ana Nunes</strong> comentou em sua publicacao: <em>"Incrivel iniciativa! Ja estava precisando..."</em></div>
+                        <div class="notif-meta">
+                            <span class="notif-dot"></span>
+                            <span>Ha 15 minutos</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn mark-read" title="Marcar como lida" onclick="markRead(this)">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 3 - Mention -->
+                <div class="notif-item unread" data-type="mention">
+                    <div class="notif-icon-wrap notif-icon-mention">
+                        <i class="fas fa-at"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Roberto Lima</strong> mencionou voce em um comentario no post de <strong>Diretorio de DocumentOS</strong></div>
+                        <div class="notif-meta">
+                            <span class="notif-dot"></span>
+                            <span>Ha 30 minutos</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn mark-read" title="Marcar como lida" onclick="markRead(this)">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 4 - Event -->
+                <div class="notif-item unread" data-type="event">
+                    <div class="notif-icon-wrap notif-icon-event">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text">Lembrete: <strong>Treinamento de Lideranca</strong> comeca amanha as <strong>09:00</strong></div>
+                        <div class="notif-meta">
+                            <span class="notif-dot"></span>
+                            <span>Ha 1 hora</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn mark-read" title="Marcar como lida" onclick="markRead(this)">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 5 - Achievement -->
+                <div class="notif-item unread" data-type="achievement">
+                    <div class="notif-icon-wrap notif-icon-achievement">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text">Parabens! Voce desbloqueou a conquista <strong>"Comunicador"</strong> por atingir 50+ posts no feed</div>
+                        <div class="notif-meta">
+                            <span class="notif-dot"></span>
+                            <span>Ha 2 horas</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn mark-read" title="Marcar como lida" onclick="markRead(this)">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 6 - System (lida) -->
+                <div class="notif-item" data-type="system">
+                    <div class="notif-icon-wrap notif-icon-system">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text">Sua senha foi alterada com sucesso. Se nao foi voce, entre em contato com o TI.</div>
+                        <div class="notif-meta">
+                            <span>Ontem, 18:30</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn" title="Remover notificacao" onclick="removeNotif(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 7 - Like (lida) -->
+                <div class="notif-item" data-type="like">
+                    <div class="notif-icon-wrap notif-icon-like">
+                        <i class="fas fa-thumbs-up"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text"><strong>Carlos Lima</strong> e <strong>outras 12 pessoas</strong> curtiram sua foto de aniversario de empresa</div>
+                        <div class="notif-meta">
+                            <span>Ontem, 14:20</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn" title="Remover notificacao" onclick="removeNotif(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificacao 8 - Event (lida) -->
+                <div class="notif-item" data-type="event">
+                    <div class="notif-icon-wrap notif-icon-event">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notif-content">
+                        <div class="notif-text">Voce foi adicionado ao evento <strong>Happy Hour - 15 Anos Economart</strong></div>
+                        <div class="notif-meta">
+                            <span>Ontem, 10:00</span>
+                        </div>
+                    </div>
+                    <div class="notif-actions">
+                        <button class="notif-action-btn" title="Remover notificacao" onclick="removeNotif(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="notif-empty" id="notifEmpty">
+                <i class="fas fa-bell-slash"></i>
+                <div class="notif-empty-text">Nenhuma notificacao por aqui</div>
+            </div>
+            <div class="notif-footer">
+                <a href="#" onclick="closeNotifPopup(); document.body.classList.remove('notif-open');">Ver todas as notificacoes</a>
+            </div>
+        </div>
+
+
+    <div class="main-layout">
+
+        <aside class="left-sidebar">
+            <div class="menu-card">
+                <a href="dash.html" class="menu-item active">
+                    <div class="menu-icon mi-home"><i class="fas fa-home"></i></div>
+                    <span class="menu-text">Feed Principal</span>
+                </a>
+                <a href="pessoas.html" class="menu-item">
+                    <div class="menu-icon mi-people"><i class="fas fa-user-friends"></i></div>
+                    <span class="menu-text">Pessoas</span>
+                </a>
+                <a href="comunidade.html" class="menu-item">
+                    <div class="menu-icon mi-groups"><i class="fas fa-users-cog"></i></div>
+                    <span class="menu-text">Comunidades</span>
+                </a>
+                <a href="eventos.html" class="menu-item">
+                    <div class="menu-icon mi-events"><i class="fas fa-calendar-alt"></i></div>
+                    <span class="menu-text">Eventos</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon mi-docs"><i class="fas fa-bookmark"></i></div>
+                    <span class="menu-text">Salvos</span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon mi-store"><i class="fas fa-calendar-check"></i></div>
+                    <span class="menu-text">Reserva de Salas</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon mi-store"><i class="fas fa-store"></i></div>
+                    <span class="menu-text">Diretorio de Documentos</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon mi-rh"><i class="fas fa-file-alt"></i></div>
+                    <span class="menu-text">Canal de Atendimento</span>
+                </a>
+                <a href="https://meurh.foxconn.com.br/web/app/RH/PortalMeuRH/#/login" class="menu-item" target="_blank">
+                    <div class="menu-icon mi-rh"><i class="fas fa-user-cog"></i></div>
+                    <span class="menu-text">Meu RH</span>
+                </a>
+            </div>
+
+            <div class="menu-card">
+                <div class="menu-section-title">Minhas Comunidades</div>
+                <div class="community-item">
+                    <div class="community-avatar" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">GL</div>
+                    <div class="community-info">
+                        <div class="community-name">Gerentes de Loja</div>
+                        <div class="community-members">42 membros</div>
+                    </div>
+                    <div class="community-badge"></div>
+                </div>
+                <div class="community-item">
+                    <div class="community-avatar" style="background: linear-gradient(135deg, var(--secondary), #10B981);">FR</div>
+                    <div class="community-info">
+                        <div class="community-name">Frente de Caixa</div>
+                        <div class="community-members">128 membros</div>
+                    </div>
+                </div>
+                <div class="community-item">
+                    <div class="community-avatar" style="background: linear-gradient(135deg, var(--accent), #C2410C);">OP</div>
+                    <div class="community-info">
+                        <div class="community-name">Operacoes e Logistica</div>
+                        <div class="community-members">86 membros</div>
+                    </div>
+                    <div class="community-badge"></div>
+                </div>
+                <div class="community-item">
+                    <div class="community-avatar" style="background: linear-gradient(135deg, var(--purple), #6D28D9);">MK</div>
+                    <div class="community-info">
+                        <div class="community-name">Marketing Varejo</div>
+                        <div class="community-members">24 membros</div>
+                    </div>
+                </div>
+                <div class="community-item">
+                    <div class="community-avatar" style="background: linear-gradient(135deg, var(--pink), #BE185D);">RH</div>
+                    <div class="community-info">
+                        <div class="community-name">RH e Bem-Estar</div>
+                        <div class="community-members">156 membros</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="center-feed">
+            
+
+            <div class="create-post">
+                <div class="create-post-input">
+                    <div class="user-avatar" style="background: linear-gradient(135deg, var(--secondary), #10B981);">GM</div>
+                    <input type="text" placeholder="O que voce gostaria de postar, Gabriel?">
+                </div>
+                <div class="create-post-actions">
+                    <div class="post-types">
+                        <button class="post-type-btn pt-photo"><i class="fas fa-image"></i> <span>Foto</span></button>
+                        <button class="post-type-btn pt-video"><i class="fas fa-video"></i> <span>Video</span></button>
+                        <button class="post-type-btn pt-event"><i class="fas fa-calendar-plus"></i> <span>Evento</span></button>
+                        <button class="post-type-btn pt-doc"><i class="fas fa-file-alt"></i> <span>Documento</span></button>
+                    </div>
+                    <button class="btn-publish">Publicar</button>
+                </div>
+            </div>
+
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="post-author-avatar" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">RH</div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">
+                                RH Corporativo
+                                <div class="verified-badge"><i class="fas fa-check"></i></div>
+                            </div>
+                            <div class="post-meta">
+                                <span>Comunicado Oficial</span><span>.</span><span>Ha 2 horas</span><span>.</span><i class="fas fa-globe-americas"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="post-options"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+                <div class="post-content">
+                    <p><strong>Grande Novidade!</strong></p>
+                    <p>Estamos lancando o programa <strong>Economart Saude</strong>, uma iniciativa de bem-estar para todos os colaboradores. A partir de junho, teremos acesso a:</p>
+                    <p>Ginastica laboral nas unidades<br>Parceria com academias (50% de desconto)<br>Acompanhamento nutricional gratuito<br>Sessoes de yoga toda sexta-feira</p>
+                    <p>As inscricoes comecam na proxima segunda-feira. Fiquem ligados!</p>
+                    <p class="post-hashtags">#EconomartSaude #BemEstar #VarejoComVida</p>
+                </div>
+                <div class="post-media" style="height: 320px; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 64px;">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+                <div class="post-stats">
+                    <div class="reactions-summary">
+                        <div class="reaction-emoji reaction-like"><i class="fas fa-thumbs-up"></i></div>
+                        <div class="reaction-emoji reaction-love"><i class="fas fa-heart"></i></div>
+                        <div class="reaction-emoji reaction-wow"><i class="fas fa-face-surprise"></i></div>
+                        <span class="reactions-count">234 reacoes</span>
+                    </div>
+                    <div class="comments-share">
+                        <span>45 comentarios</span><span>12 compartilhamentos</span>
+                    </div>
+                </div>
+                <div class="post-actions-bar">
+                    <button class="post-action like-btn" onclick="toggleLike(this)"><i class="far fa-thumbs-up"></i> <span>Curtir</span></button>
+                    <button class="post-action comment-btn" onclick="focusComment(this)"><i class="far fa-comment"></i> <span>Comentar</span></button>
+                    <button class="post-action save-btn" onclick="toggleSave(this)"><i class="far fa-bookmark"></i> <span>Salvar</span></button>
+                </div>
+                <div class="comments-section">
+                    <div class="comment-item">
+                        <div class="comment-avatar" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8);">JP</div>
+                        <div class="comment-body">
+                            <div class="comment-author">Joao Pereira <span style="color: var(--gray); font-weight: 400;">. Caixa</span></div>
+                            <div class="comment-text">Incrivel iniciativa! Ja estava precisando de algo assim. Vou me inscrever assim que abrir!</div>
+                            <div class="comment-actions">
+                                <span>Curtir</span><span>.</span><span>Responder</span><span>.</span><span>Ha 1 hora</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-item">
+                        <div class="comment-avatar" style="background: linear-gradient(135deg, #DB2777, #BE185D);">AN</div>
+                        <div class="comment-body">
+                            <div class="comment-author">Ana Nunes <span style="color: var(--gray); font-weight: 400;">. Reposicao</span></div>
+                            <div class="comment-text">As sessoes de yoga serao em qual horario? Preciso organizar minha escala!</div>
+                            <div class="comment-actions">
+                                <span>Curtir</span><span>.</span><span>Responder</span><span>.</span><span>Ha 45 minutos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-input-wrapper">
+                        <div class="user-avatar" style="width: 32px; height: 32px; font-size: 12px; background: linear-gradient(135deg, var(--secondary), #10B981);">GM</div>
+                        <input type="text" placeholder="Escreva um comentario...">
+                    </div>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="post-author-avatar" style="background: linear-gradient(135deg, var(--accent), #C2410C);">OP</div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">
+                                Diretorio de Documentos
+                                <div class="verified-badge"><i class="fas fa-check"></i></div>
+                            </div>
+                            <div class="post-meta">
+                                <span>Comunicado</span><span>.</span><span>Ha 4 horas</span><span>.</span><i class="fas fa-building"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="post-options"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+                <div class="post-content">
+                    <p><strong>Atencao, equipe!</strong></p>
+                    <p>Identificamos uma inconsistencia no processo de abertura de loja nas ultimas 3 unidades auditadas. O checklist de <strong>verificacao de equipamentos de frio</strong> nao esta sendo preenchido corretamente.</p>
+                    <p><strong>Acao necessaria:</strong> Todos os gerentes devem revisar o treinamento do modulo de checklists tecnicos ate sexta-feira.</p>
+                    <p>Quem tiver duvidas, pode me chamar no privado ou comentar aqui. Vamos manter nossos padroes!</p>
+                </div>
+                <div class="post-media-grid grid-2">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23FEF3C7' width='400' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter' font-size='18' fill='%23D97706'%3EChecklist Tecnico%3C/text%3E%3C/svg%3E" alt="Checklist">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23DBEAFE' width='400' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter' font-size='18' fill='%231D4ED8'%3EEquipamentos de Frio%3C/text%3E%3C/svg%3E" alt="Frio">
+                </div>
+                <div class="post-stats">
+                    <div class="reactions-summary">
+                        <div class="reaction-emoji reaction-like"><i class="fas fa-thumbs-up"></i></div>
+                        <div class="reaction-emoji reaction-wow"><i class="fas fa-face-surprise"></i></div>
+                        <span class="reactions-count">89 reacoes</span>
+                    </div>
+                    <div class="comments-share">
+                        <span>23 comentarios</span><span>8 compartilhamentos</span>
+                    </div>
+                </div>
+                <div class="post-actions-bar">
+                    <button class="post-action like-btn" onclick="toggleLike(this)"><i class="far fa-thumbs-up"></i> <span>Curtir</span></button>
+                    <button class="post-action comment-btn" onclick="focusComment(this)"><i class="far fa-comment"></i> <span>Comentar</span></button>
+                    <button class="post-action save-btn" onclick="toggleSave(this)"><i class="far fa-bookmark"></i> <span>Salvar</span></button>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="post-author-avatar" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8);">JP</div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Joao Pereira</div>
+                            <div class="post-meta">
+                                <span>Caixa . Loja Centro</span><span>.</span><span>Ha 6 horas</span><span>.</span><i class="fas fa-globe-americas"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="post-options"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+                <div class="post-content">
+                    <p>Hoje completei <strong>1 ano na Economart</strong>!</p>
+                    <p>Quero agradecer a todos da equipe da Loja Centro pelo apoio e pela energia de todos os dias. Aprendi muito e espero continuar crescendo junto com essa empresa incrivel!</p>
+                    <p>Obrigado, Economart!</p>
+                    <p class="post-hashtags">#AniversarioDeEmpresa #Economart #1Ano #Gratidao</p>
+                </div>
+                <div class="post-media" style="height: 280px; background: linear-gradient(135deg, #FCD34D, #F59E0B, #EF4444); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px;">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="post-stats">
+                    <div class="reactions-summary">
+                        <div class="reaction-emoji reaction-love"><i class="fas fa-heart"></i></div>
+                        <div class="reaction-emoji reaction-like"><i class="fas fa-thumbs-up"></i></div>
+                        <div class="reaction-emoji reaction-wow"><i class="fas fa-face-surprise"></i></div>
+                        <span class="reactions-count">156 reacoes</span>
+                    </div>
+                    <div class="comments-share">
+                        <span>32 comentarios</span><span>5 compartilhamentos</span>
+                    </div>
+                </div>
+                <div class="post-actions-bar">
+                    <button class="post-action like-btn" onclick="toggleLike(this)"><i class="far fa-thumbs-up"></i> <span>Curtir</span></button>
+                    <button class="post-action comment-btn" onclick="focusComment(this)"><i class="far fa-comment"></i> <span>Comentar</span></button>
+                    <button class="post-action save-btn" onclick="toggleSave(this)"><i class="far fa-bookmark"></i> <span>Salvar</span></button>
+                </div>
+                <div class="comments-section">
+                    <div class="comment-item">
+                        <div class="comment-avatar" style="background: linear-gradient(135deg, var(--secondary), #10B981);">GM</div>
+                        <div class="comment-body">
+                            <div class="comment-author">Gabriel Matos <span style="color: var(--gray); font-weight: 400;">. Analista Sistemas</span></div>
+                            <div class="comment-text">Parabens, Joao! E um prazer ter voce no time. Que venham muitos anos mais!</div>
+                            <div class="comment-actions">
+                                <span>Curtir</span><span>.</span><span>Responder</span><span>.</span><span>Ha 5 horas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-input-wrapper">
+                        <div class="user-avatar" style="width: 32px; height: 32px; font-size: 12px; background: linear-gradient(135deg, var(--secondary), #10B981);">GM</div>
+                        <input type="text" placeholder="Escreva um comentario...">
+                    </div>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <div class="post-author-avatar" style="background: linear-gradient(135deg, #7C3AED, #6D28D9);">MK</div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">
+                                Marketing Economart
+                                <div class="verified-badge"><i class="fas fa-check"></i></div>
+                            </div>
+                            <div class="post-meta">
+                                <span>Campanha</span><span>.</span><span>Ontem</span><span>.</span><i class="fas fa-globe-americas"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="post-options"><i class="fas fa-ellipsis-h"></i></button>
+                </div>
+                <div class="post-content">
+                    <p><strong>Campanha Dia das Maes esta no ar!</strong></p>
+                    <p>Colaboradores, o material de PDV ja esta disponivel para download na area de Documentos. Temos:</p>
+                    <p>Banners para vitrine<br>Tags de preco especiais<br>Posts para redes sociais das lojas<br>Display de brindes</p>
+                    <p>Prazo de implantacao: ate 08/05. Bora vender!</p>
+                </div>
+                <div class="post-media-grid grid-3">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect fill='%23FCE7F3' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter' font-size='16' fill='%23DB2777'%3EBanner%3C/text%3E%3C/svg%3E" alt="Banner">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect fill='%23F3E8FF' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter' font-size='16' fill='%237C3AED'%3ETags%3C/text%3E%3C/svg%3E" alt="Tags">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect fill='%23ECFDF5' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter' font-size='16' fill='%23059669'%3ESocial%3C/text%3E%3C/svg%3E" alt="Social">
+                </div>
+                <div class="post-stats">
+                    <div class="reactions-summary">
+                        <div class="reaction-emoji reaction-like"><i class="fas fa-thumbs-up"></i></div>
+                        <div class="reaction-emoji reaction-love"><i class="fas fa-heart"></i></div>
+                        <span class="reactions-count">67 reacoes</span>
+                    </div>
+                    <div class="comments-share">
+                        <span>14 comentarios</span><span>22 compartilhamentos</span>
+                    </div>
+                </div>
+                <div class="post-actions-bar">
+                    <button class="post-action like-btn" onclick="toggleLike(this)"><i class="far fa-thumbs-up"></i> <span>Curtir</span></button>
+                    <button class="post-action comment-btn" onclick="focusComment(this)"><i class="far fa-comment"></i> <span>Comentar</span></button>
+                    <button class="post-action save-btn" onclick="toggleSave(this)"><i class="far fa-bookmark"></i> <span>Salvar</span></button>
+                </div>
+            </article>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title"><i class="fas fa-birthday-cake"></i> Aniversariantes do Dia</div>
+                    <a href="#" class="widget-more">Ver todos</a>
+                </div>
+                <div class="widget-body">
+                    <div class="birthday-item">
+                        <div class="birthday-avatar" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8);">JP
+                            <div class="birthday-cake"><i class="fas fa-birthday-cake"></i></div>
+                        </div>
+                        <div class="birthday-info">
+                            <div class="birthday-name">Joao Pereira</div>
+                            <div class="birthday-role">Caixa . Loja CTG 1</div>
+                        </div>
+                        <button class="btn-wish">Parabenizar</button>
+                    </div>
+                    <div class="birthday-item">
+                        <div class="birthday-avatar" style="background: linear-gradient(135deg, #DB2777, #BE185D);">AN
+                            <div class="birthday-cake"><i class="fas fa-birthday-cake"></i></div>
+                        </div>
+                        <div class="birthday-info">
+                            <div class="birthday-name">Ana Nunes</div>
+                            <div class="birthday-role">Reposicao . Loja PSG 1</div>
+                        </div>
+                        <button class="btn-wish">Parabenizar</button>
+                    </div>
+                    <div class="birthday-item">
+                        <div class="birthday-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">RL
+                            <div class="birthday-cake"><i class="fas fa-birthday-cake"></i></div>
+                        </div>
+                        <div class="birthday-info">
+                            <div class="birthday-name">Roberto Lima</div>
+                            <div class="birthday-role">Gerente . Loja MAN 1</div>
+                        </div>
+                        <button class="btn-wish">Parabenizar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title"><i class="fas fa-fire"></i> Em Alta</div>
+                    <a href="#" class="widget-more">Ver mais</a>
+                </div>
+                <div class="widget-body">
+                    <div class="trending-item">
+                        <div class="trending-category"><i class="fas fa-arrow-trend-up"></i> Comunicado</div>
+                        <div class="trending-title">Programa Economart Saude</div>
+                        <div class="trending-count">234 interacoes . Ha 2 horas</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-category"><i class="fas fa-arrow-trend-up"></i> Operacoes</div>
+                        <div class="trending-title">Checklist Tecnico - Equipamentos de Frio</div>
+                        <div class="trending-count">89 interacoes . Ha 4 horas</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-category"><i class="fas fa-arrow-trend-up"></i> Campanha</div>
+                        <div class="trending-title">Dia das Maes - Material de PDV</div>
+                        <div class="trending-count">67 interacoes . Ontem</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-category"><i class="fas fa-arrow-trend-up"></i> Celebracao</div>
+                        <div class="trending-title">Aniversario de Empresa - Joao Pereira</div>
+                        <div class="trending-count">156 interacoes . Ha 6 horas</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title"><i class="fas fa-briefcase"></i> Vagas Internas</div>
+                    <a href="#" class="widget-more">Ver todas</a>
+                </div>
+                <div class="widget-body">
+                    <div class="job-item">
+                        <div class="job-title">Gerente de Loja - Loja Oeste</div>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Salvador, BA</span>
+                            <span class="job-tag">Nova</span>
+                        </div>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-title">Analista de Marketing Digital</div>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Matriz</span>
+                            <span class="job-tag">Urgente</span>
+                        </div>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-title">Especialista em Frios</div>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Loja Norte</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title"><i class="fas fa-user-plus"></i> Sugestoes para Seguir</div>
+                </div>
+                <div class="widget-body">
+                    <div class="suggestion-item">
+                        <div class="suggestion-avatar" style="background: linear-gradient(135deg, #0D9488, #0F766E);">CL</div>
+                        <div class="suggestion-info">
+                            <div class="suggestion-name">Carlos Lima</div>
+                            <div class="suggestion-role">Analista de TI</div>
+                        </div>
+                        <button class="btn-follow">Seguir</button>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">RL</div>
+                        <div class="suggestion-info">
+                            <div class="suggestion-name">Roberta Lopes</div>
+                            <div class="suggestion-role">Supervisora de Loja</div>
+                        </div>
+                        <button class="btn-follow">Seguir</button>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-avatar" style="background: linear-gradient(135deg, #7C3AED, #6D28D9);">MF</div>
+                        <div class="suggestion-info">
+                            <div class="suggestion-name">Marcos Ferreira</div>
+                            <div class="suggestion-role">Especialista em Frios</div>
+                        </div>
+                        <button class="btn-follow">Seguir</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="#">Sobre</a> .
+                <a href="#">Privacidade</a> .
+                <a href="#">Termos</a> .
+                <a href="#">Ajuda</a><br>
+                Economart Connect 2026
+            </div>
+        </aside>
+    </div>
+
+    
+
+    <script>
+        // Notification popup toggle
+        const notifBtn = document.querySelector('.nav-btn[title="Notificacoes"]');
+        const notifPopup = document.getElementById('notifPopup');
+        const notifOverlay = document.getElementById('notifOverlay');
+
+        notifBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isActive = notifPopup.classList.contains('active');
+            if (isActive) {
+                closeNotifPopup();
+                document.body.classList.remove('notif-open');
+            } else {
+                openNotifPopup();
+            }
+        });
+
+        function openNotifPopup() {
+            notifPopup.classList.add('active');
+            notifOverlay.classList.add('active');
+            document.body.classList.add('notif-open');
+        }
+
+        function closeNotifPopup() {
+            notifPopup.classList.remove('active');
+            notifOverlay.classList.remove('active');
+            document.body.classList.remove('notif-open');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') { closeNotifPopup(); document.body.classList.remove('notif-open'); }
+        });
+
+        // Mark single notification as read
+        function markRead(btn) {
+            const item = btn.closest('.notif-item');
+            item.classList.remove('unread');
+            const dot = item.querySelector('.notif-dot');
+            if (dot) dot.remove();
+            btn.remove();
+            updateBadge();
+        }
+
+        // Mark all as read
+        function markAllRead() {
+            document.querySelectorAll('.notif-item.unread').forEach(item => {
+                item.classList.remove('unread');
+                const dot = item.querySelector('.notif-dot');
+                if (dot) dot.remove();
+                const btn = item.querySelector('.mark-read');
+                if (btn) btn.remove();
+            });
+            updateBadge();
+        }
+
+        // Remove notification
+        function removeNotif(btn) {
+            const item = btn.closest('.notif-item');
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+                item.remove();
+                checkEmpty();
+            }, 200);
+        }
+
+        // Check if list is empty
+        function checkEmpty() {
+            const items = document.querySelectorAll('.notif-item');
+            const emptyState = document.getElementById('notifEmpty');
+            if (items.length === 0) {
+                emptyState.style.display = 'block';
+            }
+        }
+
+        // Update badge count
+        function updateBadge() {
+            const unreadCount = document.querySelectorAll('.notif-item.unread').length;
+            const badge = document.querySelector('.nav-btn[title="Notificacoes"] .badge');
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+            // Update tab badge
+            const tabBadge = document.querySelector('.notif-tab .tab-badge');
+            if (tabBadge) {
+                if (unreadCount > 0) {
+                    tabBadge.textContent = unreadCount;
+                    tabBadge.style.display = 'flex';
+                } else {
+                    tabBadge.style.display = 'none';
+                }
+            }
+        }
+
+        // Switch notification tabs
+        function switchNotifTab(tab) {
+            document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const items = document.querySelectorAll('.notif-item');
+            items.forEach(item => {
+                if (tab === 'all') {
+                    item.style.display = 'flex';
+                } else if (tab === 'unread') {
+                    item.style.display = item.classList.contains('unread') ? 'flex' : 'none';
+                } else if (tab === 'mentions') {
+                    item.style.display = item.dataset.type === 'mention' ? 'flex' : 'none';
+                }
+            });
+        }
+    
+
+    // Like functionality
+    function toggleLike(btn) {
+        btn.classList.toggle('liked');
+        const icon = btn.querySelector('i');
+        if (btn.classList.contains('liked')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            btn.style.color = 'var(--primary)';
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            btn.style.color = '';
+        }
+    }
+
+    // Focus comment input
+    function focusComment(btn) {
+        const postCard = btn.closest('.post-card');
+        const commentInput = postCard.querySelector('.comment-input-wrapper input');
+        if (commentInput) {
+            commentInput.focus();
+            commentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    // Save functionality
+    function toggleSave(btn) {
+        btn.classList.toggle('saved');
+        const icon = btn.querySelector('i');
+        if (btn.classList.contains('saved')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            btn.style.color = 'var(--accent)';
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            btn.style.color = '';
+        }
+    }
+
+    // Add Enter key support for comment inputs
+    document.querySelectorAll('.comment-input-wrapper input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                const commentsSection = this.closest('.comments-section');
+
+                // Create new comment
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-item';
+                newComment.style.animation = 'fadeInUp 0.3s ease';
+                newComment.innerHTML = `
+                    <div class="comment-avatar" style="background: linear-gradient(135deg, var(--secondary), #10B981);">MS</div>
+                    <div class="comment-body">
+                        <div class="comment-author">Gabriel Matos <span style="color: var(--gray); font-weight: 400;">. Você</span></div>
+                        <div class="comment-text">${this.value.trim()}</div>
+                        <div class="comment-actions">
+                            <span>Curtir</span><span>.</span><span>Responder</span><span>.</span><span>Agora</span>
+                        </div>
+                    </div>
+                `;
+
+                commentsSection.insertBefore(newComment, this.closest('.comment-input-wrapper'));
+                this.value = '';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
